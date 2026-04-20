@@ -58,21 +58,21 @@ function App() {
             let fullText = ""
 
             while (true) {
-                const {done, value} = await reader.read();
-                if (done) break;
+                const {done, value} = await reader.read()
+                if (done) break
 
-                const chunk = decoder.decode(value);
-                const lines = chunk.split("\n\n");
+                const chunk = decoder.decode(value)
+                const lines = chunk.split("\n\n")
 
                 for (let line of lines) {
 
-                    if (!line.startsWith("data:")) continue;
-                    const data = line.replace("data: ", "");
-                    if (data === "[DONE]") return;
+                    if (!line.startsWith("data:")) continue
+                    const data = line.replace("data: ", "")
+                    if (data === "[DONE]") return
 
-                    const parsed = JSON.parse(data);
-                    fullText += parsed.content;
-                    setQuote(fullText);
+                    const parsed = JSON.parse(data)
+                    fullText += parsed.content
+                    setQuote(fullText)
                 }
             }
         } catch (e) {
@@ -99,7 +99,7 @@ function App() {
     useEffect(() => {
         const timer = setInterval(() => {
             getQuote();
-        }, 30000);
+        }, 50000);
 
         return () => clearInterval(timer);
     }, []);

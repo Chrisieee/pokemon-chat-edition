@@ -16,7 +16,7 @@ gemaakt door de prompt engineering.
 
 - Opdrachten ingeleverd (10 punten)
 - User interface, System prompt met tone of voice en gedrag past bij useCase (30 punten)
-- Node server houd tokens & history bij (40 punten)
+- Node server houdt tokens & history bij (40 punten)
 - Taalmodel geeft JSON structured output (50 punten)
 
 ## To do:

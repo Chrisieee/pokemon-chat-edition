@@ -4,7 +4,7 @@ const model = new AzureChatOpenAI({
     temperature: 0.4, streaming: true
 });
 
-const systemMessage = 'Je weet alles over pokemon. Je kan heel goed citeren uit de anime en games. Geef alleen de quote terug!'
+const systemMessage = 'Je weet alles over pokemon. Je kan heel goed citeren uit de anime en games. Geef alleen de quote terug + wie het zei!'
 
 let quotes = []
 

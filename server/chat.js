@@ -41,7 +41,6 @@ export async function callAssistant(prompt) {
     const quizData = result.parsed
     if (quizData?.guessed) {
         pokemons.push(JSON.stringify(result.parsed.pokemon))
-        console.log(pokemons)
 
         messages = [
             {
