@@ -11,6 +11,7 @@ function App() {
     const [isLoading, setIsLoading] = useState(false)
     const bottomRef = useRef(null)
     const [score, setScore] = useState(0)
+    const [quote, setQuote] = useState(null)
 
     const inputHandler = (e) => {
         const {name, value} = e.target
@@ -20,7 +21,7 @@ function App() {
         })
     }
 
-    async function sendChat({prompt}) {
+    const sendChat = async ({prompt}) => {
         setChat(prev => [...prev, {
             role: "user", message: prompt,
         }])
@@ -43,7 +44,43 @@ function App() {
         }
     }
 
-    function formHandler(e) {
+    const getQuote = async () => {
+        console.log("test")
+        try {
+            const response = await fetch('http://localhost:3000/api/quote', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({message: "Geef me een toffe quote uit pokemon"})
+            })
+
+            const reader = response.body.getReader()
+            const decoder = new TextDecoder()
+            let fullText = ""
+
+            while (true) {
+                const {done, value} = await reader.read();
+                if (done) break;
+
+                const chunk = decoder.decode(value);
+                const lines = chunk.split("\n\n");
+
+                for (let line of lines) {
+
+                    if (!line.startsWith("data:")) continue;
+                    const data = line.replace("data: ", "");
+                    if (data === "[DONE]") return;
+
+                    const parsed = JSON.parse(data);
+                    fullText += parsed.content;
+                    setQuote(fullText);
+                }
+            }
+        } catch (e) {
+            console.log(e.message)
+        }
+    }
+
+    const formHandler = (e) => {
         e.preventDefault()
         sendChat(formData)
         setFormData({prompt: ""})
@@ -59,10 +96,23 @@ function App() {
         scrollToBottom()
     }, [chat])
 
+    useEffect(() => {
+        const timer = setInterval(() => {
+            getQuote();
+        }, 30000);
+
+        return () => clearInterval(timer);
+    }, []);
+
+    useEffect(() => {
+        console.log(quote)
+    }, [quote]);
+
     return (
-        <main className="w-[75%] mx-auto h-[90%] flex flex-col bg-blue-500 rounded-2xl p-5">
+        <main className="w-[80%] mx-auto h-[95%] flex flex-col bg-blue-500 rounded-4xl p-5">
             <h1 className="text-4xl text-yellow-300 text-center font-bold pb-2">Pokemon: Chat Edition</h1>
-            <p className="text-center bg-yellow-300 w-[10%] m-auto text-blue-500 font-bold rounded-xl mb-2">Score: {score}</p>
+            <p className="text-center max-w-[90%] px-2 m-auto text-yellow-300 font-bold rounded-xl mb-2">{quote}</p>
+            <p className="text-center bg-yellow-300 w-[15%] m-auto text-blue-500 font-bold rounded-xl mb-2">Score: {score}</p>
             <section className="grow bg-gray-900 rounded-2xl p-3 flex flex-col gap-3 overflow-y-auto">
                 {chat.map((chat) =>
                     <div className="flex flex-col gap-3">
@@ -77,11 +127,12 @@ function App() {
                 </div> : null}
                 <div ref={bottomRef}/>
             </section>
-            <form className="flex mt-2" onSubmit={formHandler}>
+
+            <form className="flex mt-3" onSubmit={formHandler}>
                 <input name="prompt" type="text" placeholder="Typ je bericht..."
-                       className="grow bg-cyan-50 rounded-lg px-3 py-1 mr-2 text-black"
+                       className="grow bg-yellow-100 rounded-lg px-3 py-1 mr-2 text-black"
                        value={formData.prompt} onChange={inputHandler}></input>
-                <button disabled={isLoading} className="bg-cyan-100 p-2 rounded-lg text-black">Verstuur</button>
+                <button disabled={isLoading} className="bg-yellow-200 p-2 rounded-lg text-black">Verstuur</button>
             </form>
         </main>
     )

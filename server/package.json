@@ -13,6 +13,7 @@
     "@langchain/core": "^1.1.39",
     "@langchain/openai": "^1.4.4",
     "cors": "^2.8.6",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "replicate": "^1.4.0"
   }
 }

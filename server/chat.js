@@ -46,7 +46,7 @@ export async function callAssistant(prompt) {
         messages = [
             {
                 role: "system",
-                content: `${systemMessage} Onthoud deze score van de speler: ${result.parsed.score}, De pokemons die je al gedaan hebt zijn: ${pokemons} gebruik deze niet nog een keer!`
+                content: `${systemMessage} Onthoud deze score van de speler: ${result.parsed.score}. De pokemons die je al gedaan hebt zijn: ${pokemons} gebruik deze niet nog een keer!`
             },
         ]
     }
