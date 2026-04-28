@@ -25,7 +25,7 @@ export async function callQuotesAssistant(prompt, res) {
                     content: chunk.content
                 })}\n\n`
             );
-            await new Promise(r => setTimeout(r, 80));
+            await new Promise(r => setTimeout(r, 80))
         }
     }
     res.write(`data: [DONE]\n\n`);

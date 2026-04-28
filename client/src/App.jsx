@@ -132,7 +132,9 @@ function App() {
                 <input name="prompt" type="text" placeholder="Typ je bericht..."
                        className="grow bg-yellow-100 rounded-lg px-3 py-1 mr-2 text-black"
                        value={formData.prompt} onChange={inputHandler}></input>
-                <button disabled={isLoading} className="bg-yellow-200 p-2 rounded-lg text-black">Verstuur</button>
+                <button disabled={isLoading}
+                        className="bg-yellow-200 p-2 rounded-lg text-black disabled:bg-gray-400">Verstuur
+                </button>
             </form>
         </main>
     )
